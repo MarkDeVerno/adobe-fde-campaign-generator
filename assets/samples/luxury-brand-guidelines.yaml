@@ -1,0 +1,30 @@
+# Luxury Fashion Campaign - Demonstrates Brand Guidelines Enforcement
+# Shows brand consistency validation with premium color palette
+
+campaign_id: luxury-autumn-collection-2025
+
+products:
+  - name: "Heritage Leather Tote"
+    description: "Handcrafted Italian leather tote bag with signature gold hardware, premium calfskin, timeless design"
+
+  - name: "Silk Cashmere Scarf"
+    description: "Limited edition silk-cashmere blend scarf, hand-rolled edges, exclusive heritage pattern"
+
+target_market: "Europe & Middle East"
+
+target_audience: "Affluent consumers aged 35-60, luxury fashion enthusiasts, heritage brand collectors"
+
+campaign_message: "Timeless elegance. Crafted for generations."
+
+brand_guidelines:
+  primary_color: "#1A1A1A"      # Sophisticated black
+  secondary_color: "#D4AF37"    # Luxury gold
+  logo_required: true           # Required for brand consistency
+  font_family: "Garamond"       # Elegant serif font
+
+# Notes for testing:
+# - Demonstrates premium brand color validation (black + gold palette)
+# - Logo requirement enforced
+# - Font choice reflects luxury positioning (Garamond serif)
+# - Target market: Europe & Middle East (demonstrates multi-region)
+# - Expected: Clean compliance check, premium visual style

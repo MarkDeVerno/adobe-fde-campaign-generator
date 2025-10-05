@@ -1,0 +1,32 @@
+# Global Tech Campaign - Demonstrates Multi-Market & Translation Readiness
+# Architecture supports future translation service integration
+
+campaign_id: global-tech-launch-2025
+
+products:
+  - name: "SmartHome Hub"
+    description: "AI-powered central home automation controller with voice assistant, energy monitoring, security integration"
+
+  - name: "EcoSensor Kit"
+    description: "Wireless environmental monitoring system tracks air quality, temperature, humidity with mobile alerts"
+
+target_market: "Global (EMEA, APAC, Americas)"
+
+target_audience: "Tech-savvy homeowners aged 28-45, early adopters, smart home enthusiasts, sustainability-focused"
+
+# Campaign message in English (translation architecture ready)
+campaign_message: "Your home, smarter. Your planet, better."
+
+brand_guidelines:
+  primary_color: "#00BCD4"      # Tech cyan
+  secondary_color: "#FF6F00"    # Innovation orange
+  logo_required: true
+  font_family: "Inter"          # Modern, multilingual-friendly font
+
+# Notes for testing:
+# - Multi-market targeting: EMEA, APAC, Americas
+# - Campaign message structure supports translation
+# - Font choice (Inter) supports Latin, Cyrillic, Greek scripts
+# - Product descriptions are concise for translation efficiency
+# - Expected: Clean compliance, architecture demonstrates translation readiness
+# - Future enhancement: Azure Translator Text API integration
