@@ -18,8 +18,8 @@ class AspectRatio(str, Enum):
         """Get pixel dimensions for aspect ratio."""
         mapping = {
             "1:1": (1024, 1024),
-            "9:16": (1024, 1820),
-            "16:9": (1820, 1024)
+            "9:16": (1024, 1792),
+            "16:9": (1792, 1024)
         }
         return mapping[self.value]
 

@@ -18,15 +18,30 @@ class DALLEClient:
         """Initialize DALL-E client with Azure credentials."""
         self.endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
         self.api_key = os.getenv("AZURE_OPENAI_KEY")
-        self.deployment_name = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "dall-e-3")
+        self.deployment_name = os.getenv("AZURE_OPENAI_DALLE_DEPLOYMENT_NAME", "dall-e-3")
 
         if not self.endpoint or not self.api_key:
             raise ValueError("Azure OpenAI credentials not configured in .env")
 
+        # Validate deployment name for DALL-E
+        if "dall-e" not in self.deployment_name.lower():
+            logger.warning(
+                "Deployment name does not contain 'dall-e'",
+                deployment=self.deployment_name
+            )
+
+        # Log configuration for debugging
+        logger.info(
+            "Initializing DALL-E client",
+            endpoint=self.endpoint,
+            deployment=self.deployment_name,
+            api_version="2024-02-01"
+        )
+
         self.client = AsyncAzureOpenAI(
             azure_endpoint=self.endpoint,
             api_key=self.api_key,
-            api_version="2024-02-01"
+            api_version="2024-02-01"  # Use stable version that matches deployment
         )
 
     async def generate_image(
@@ -47,7 +62,14 @@ class DALLEClient:
             URL of generated image, or None if generation failed
         """
         try:
-            logger.info("Generating image with DALL-E 3", prompt=prompt[:50], size=size)
+            logger.info(
+                "Calling DALL-E API",
+                endpoint=self.endpoint,
+                deployment=self.deployment_name,
+                prompt=prompt[:50],
+                size=size,
+                quality=quality
+            )
 
             response = await self.client.images.generate(
                 model=self.deployment_name,
@@ -63,7 +85,13 @@ class DALLEClient:
             return image_url
 
         except Exception as e:
-            logger.error("Failed to generate image", error=str(e), prompt=prompt[:50])
+            logger.error(
+                "Failed to generate image",
+                error=str(e),
+                endpoint=self.endpoint,
+                deployment=self.deployment_name,
+                prompt=prompt[:50]
+            )
             return None
 
     async def download_image(self, url: str, output_path: str) -> bool:
