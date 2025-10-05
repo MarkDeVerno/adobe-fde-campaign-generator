@@ -182,13 +182,13 @@ python -m src.cli.main --help
 
 | Step | Status | Description | Reference |
 |------|--------|-------------|-----------|
-| 6.1 | ☐ | Integration tests created (`test_campaign_pipeline.py`) | [Phase 6 - Step 6.1](02-IMPLEMENTATION-PLAN.md#step-61-integration-test-suite-15-min) |
-| 6.2 | ☐ | YAML loading tests pass | [Phase 6 - Step 6.1](02-IMPLEMENTATION-PLAN.md#step-61-integration-test-suite-15-min) |
-| 6.3 | ☐ | Compliance check tests pass | [Phase 6 - Step 6.1](02-IMPLEMENTATION-PLAN.md#step-61-integration-test-suite-15-min) |
-| 6.4 | ☐ | End-to-end pipeline test passes (with mocked DALL-E) | [Phase 6 - Step 6.1](02-IMPLEMENTATION-PLAN.md#step-61-integration-test-suite-15-min) |
-| 6.5 | ☐ | No hardcoded secrets in source code | [Phase 6 - Step 6.3](02-IMPLEMENTATION-PLAN.md#step-63-quality-checks-5-min) |
-| 6.6 | ☐ | All functions have type hints | [Phase 6 - Step 6.3](02-IMPLEMENTATION-PLAN.md#step-63-quality-checks-5-min) |
-| 6.7 | ☐ | All classes/functions have docstrings | [Phase 6 - Step 6.3](02-IMPLEMENTATION-PLAN.md#step-63-quality-checks-5-min) |
+| 6.1 | ✅ | Integration tests created (`test_campaign_pipeline.py`) | [Phase 6 - Step 6.1](02-IMPLEMENTATION-PLAN.md#step-61-integration-test-suite-15-min) |
+| 6.2 | ✅ | YAML loading tests pass | [Phase 6 - Step 6.1](02-IMPLEMENTATION-PLAN.md#step-61-integration-test-suite-15-min) |
+| 6.3 | ✅ | Compliance check tests pass | [Phase 6 - Step 6.1](02-IMPLEMENTATION-PLAN.md#step-61-integration-test-suite-15-min) |
+| 6.4 | ✅ | End-to-end pipeline test passes (with mocked DALL-E) | [Phase 6 - Step 6.1](02-IMPLEMENTATION-PLAN.md#step-61-integration-test-suite-15-min) |
+| 6.5 | ✅ | No hardcoded secrets in source code | [Phase 6 - Step 6.3](02-IMPLEMENTATION-PLAN.md#step-63-quality-checks-5-min) |
+| 6.6 | ✅ | All functions have type hints | [Phase 6 - Step 6.3](02-IMPLEMENTATION-PLAN.md#step-63-quality-checks-5-min) |
+| 6.7 | ✅ | All classes/functions have docstrings | [Phase 6 - Step 6.3](02-IMPLEMENTATION-PLAN.md#step-63-quality-checks-5-min) |
 
 **Validation Commands**:
 ```bash

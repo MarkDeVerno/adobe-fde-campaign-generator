@@ -29,7 +29,7 @@ class BrandGuidelines(BaseModel):
 class Campaign(BaseModel):
     """Marketing campaign brief."""
     campaign_id: str = Field(..., min_length=1)
-    products: List[Product] = Field(..., min_items=2, description="At least 2 products required")
+    products: List[Product] = Field(..., min_length=2, description="At least 2 products required")
     target_market: str = Field(..., min_length=2)
     target_audience: str = Field(..., min_length=10)
     campaign_message: str = Field(..., min_length=10, max_length=500)
