@@ -127,9 +127,14 @@ class AssetGeneratorService:
             Asset object if successful, None if failed
         """
         try:
+            # Create subdirectory structure: outputs/{product_name}/{aspect_ratio}/
+            aspect_ratio_str = aspect_ratio.value.replace(':', 'x')
+            product_dir = self.output_dir / product_name / aspect_ratio_str
+            product_dir.mkdir(parents=True, exist_ok=True)
+
             # Generate filename
-            filename = f"{campaign.campaign_id}_{product_name}_{aspect_ratio.value.replace(':', 'x')}.png"
-            file_path = self.output_dir / filename
+            filename = f"{campaign.campaign_id}_{product_name}_{aspect_ratio_str}.png"
+            file_path = product_dir / filename
 
             # Check cache if enabled
             if self.enable_caching and file_path.exists():
