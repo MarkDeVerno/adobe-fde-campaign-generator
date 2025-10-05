@@ -50,6 +50,11 @@
   - Evidence: `AspectRatio` enum with correct DALL-E dimensions
   - Implementation: Dimension mapping fixed to 1792px (not 1820px) (src/domain/models/asset.py:16-24)
 
+- **[✓] Organize outputs by product and aspect ratio**
+  - Evidence: Subdirectory structure `outputs/{product}/{aspect_ratio}/`
+  - Implementation: Dynamic folder creation in `AssetGeneratorService` (src/application/services/asset_generator.py:130-137)
+  - Example: `outputs/EcoBottle Pro/16x9/adobe-demo-eco-tech-2025_EcoBottle Pro_16x9.png`
+
 - **[✓] Support multiple products per campaign**
   - Evidence: Minimum 2 products enforced in validation
   - Implementation: `Campaign.products` with `min_length=2` (src/domain/models/campaign.py:23)
@@ -253,8 +258,8 @@ brand_guidelines:
 
 ### Completion Statistics
 
-**Total Items**: 26
-**Complete**: 24 (92%)
+**Total Items**: 27
+**Complete**: 25 (93%)
 **Partial**: 1 (4%)
 **Not Implemented**: 1 (4%)
 
@@ -262,7 +267,7 @@ brand_guidelines:
 - ✓ Complete: 5/5 (100%)
 
 ### Requirements
-- ✓ Complete: 11/11 (100%)
+- ✓ Complete: 12/12 (100%)
 
 ### Nice-to-Have Features
 - ✓ Complete: 8/10 (80%)
