@@ -10,13 +10,13 @@
 
 | Step | Status | Description | Reference |
 |------|--------|-------------|-----------|
-| 0.1 | ☐ | Azure OpenAI resource created and DALL-E 3 deployed | [Phase 0 - Step 0.1](02-IMPLEMENTATION-PLAN.md#phase-0-manual-setup-30-45-min) |
-| 0.2 | ☐ | Azure Content Safety resource created with custom blocklist | [Phase 0 - Step 0.1](02-IMPLEMENTATION-PLAN.md#phase-0-manual-setup-30-45-min) |
-| 0.3 | ☐ | All Azure credentials saved (endpoints + API keys) | [Phase 0 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint) |
-| 0.4 | ☐ | GitHub repo created: `adobe-fde-campaign-generator` | [Phase 0 - Step 0.2](02-IMPLEMENTATION-PLAN.md#step-02-create-github-repository-10-min-manual) |
-| 0.5 | ☐ | Local project directory created with venv | [Phase 0 - Step 0.3](02-IMPLEMENTATION-PLAN.md#step-03-initialize-local-project-15-min-hybrid) |
-| 0.6 | ☐ | `.env` file created with actual Azure credentials | [Phase 0 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-1) |
-| 0.7 | ☐ | Git remote configured to GitHub repo | [Phase 0 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-1) |
+| 0.1 | ✅ | Azure OpenAI resource created and DALL-E 3 deployed | [Phase 0 - Step 0.1](02-IMPLEMENTATION-PLAN.md#phase-0-manual-setup-30-45-min) |
+| 0.2 | ✅ | Azure Content Safety resource created with custom blocklist | [Phase 0 - Step 0.1](02-IMPLEMENTATION-PLAN.md#phase-0-manual-setup-30-45-min) |
+| 0.3 | ✅ | All Azure credentials saved (endpoints + API keys) | [Phase 0 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint) |
+| 0.4 | ✅ | GitHub repo created: `adobe-fde-campaign-generator` | [Phase 0 - Step 0.2](02-IMPLEMENTATION-PLAN.md#step-02-create-github-repository-10-min-manual) |
+| 0.5 | ✅ | Local project directory created with venv | [Phase 0 - Step 0.3](02-IMPLEMENTATION-PLAN.md#step-03-initialize-local-project-15-min-hybrid) |
+| 0.6 | ✅ | `.env` file created with actual Azure credentials | [Phase 0 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-1) |
+| 0.7 | ✅ | Git remote configured to GitHub repo | [Phase 0 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-1) |
 
 **Validation Commands**:
 ```bash
