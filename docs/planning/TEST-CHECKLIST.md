@@ -152,10 +152,10 @@ python test_application.py
 
 | Step | Status | Description | Reference |
 |------|--------|-------------|-----------|
-| 5.1 | ☐ | `cli/main.py` created with Click commands | [Phase 5 - Step 5.1](02-IMPLEMENTATION-PLAN.md#step-51-main-cli-entry-point-10-min) |
-| 5.2 | ☐ | `cli/utils.py` created with colored output functions | [Phase 5 - Step 5.2](02-IMPLEMENTATION-PLAN.md#step-52-cli-utilities-5-min) |
-| 5.3 | ☐ | CLI help text displays correctly | [Phase 5 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-3) |
-| 5.4 | ☐ | CLI validates environment variables before execution | [Phase 5 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-3) |
+| 5.1 | ✅ | `cli/main.py` created with Click commands | [Phase 5 - Step 5.1](02-IMPLEMENTATION-PLAN.md#step-51-main-cli-entry-point-10-min) |
+| 5.2 | ✅ | `cli/utils.py` created with colored output functions | [Phase 5 - Step 5.2](02-IMPLEMENTATION-PLAN.md#step-52-cli-utilities-5-min) |
+| 5.3 | ✅ | CLI help text displays correctly | [Phase 5 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-3) |
+| 5.4 | ✅ | CLI validates environment variables before execution | [Phase 5 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-3) |
 
 **Validation Commands**:
 ```bash
