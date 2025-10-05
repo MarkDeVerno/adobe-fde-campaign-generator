@@ -118,14 +118,14 @@ python test_infrastructure.py
 
 | Step | Status | Description | Reference |
 |------|--------|-------------|-----------|
-| 4.1 | ☐ | `campaign_orchestrator.py` created with pipeline orchestration | [Phase 4 - Step 4.1](02-IMPLEMENTATION-PLAN.md#step-41-campaign-orchestrator-service-15-min) |
-| 4.2 | ☐ | `compliance_service.py` created wrapping Content Safety | [Phase 4 - Step 4.2](02-IMPLEMENTATION-PLAN.md#step-42-compliance-service-5-min) |
-| 4.3 | ☐ | `asset_generator.py` created with async concurrent generation | [Phase 4 - Step 4.3](02-IMPLEMENTATION-PLAN.md#step-43-asset-generator-service-10-min) |
-| 4.4 | ☐ | Compliance service validates safe messages | [Phase 4 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-10-min-1) |
-| 4.5 | ☐ | Compliance service rejects prohibited terms | [Phase 4 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-10-min-1) |
-| 4.6 | ☐ | Asset generator builds correct DALL-E prompts | [Phase 4 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-10-min-1) |
-| 4.7 | ☐ | Campaign orchestrator validates YAML loading | [Phase 4 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-10-min-1) |
-| 4.8 | ☐ | Clean Architecture dependency flow correct (App→Domain←Infra) | [Phase 4 - Architecture Validation](02-IMPLEMENTATION-PLAN.md#architecture-validation) |
+| 4.1 | ✅ | `campaign_orchestrator.py` created with pipeline orchestration | [Phase 4 - Step 4.1](02-IMPLEMENTATION-PLAN.md#step-41-campaign-orchestrator-service-15-min) |
+| 4.2 | ✅ | `compliance_service.py` created wrapping Content Safety | [Phase 4 - Step 4.2](02-IMPLEMENTATION-PLAN.md#step-42-compliance-service-5-min) |
+| 4.3 | ✅ | `asset_generator.py` created with async concurrent generation | [Phase 4 - Step 4.3](02-IMPLEMENTATION-PLAN.md#step-43-asset-generator-service-10-min) |
+| 4.4 | ✅ | Compliance service validates safe messages | [Phase 4 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-10-min-1) |
+| 4.5 | ✅ | Compliance service rejects prohibited terms | [Phase 4 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-10-min-1) |
+| 4.6 | ✅ | Asset generator builds correct DALL-E prompts | [Phase 4 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-10-min-1) |
+| 4.7 | ✅ | Campaign orchestrator validates YAML loading | [Phase 4 - Validation](02-IMPLEMENTATION-PLAN.md#validation-checkpoint-10-min-1) |
+| 4.8 | ✅ | Clean Architecture dependency flow correct (App→Domain←Infra) | [Phase 4 - Architecture Validation](02-IMPLEMENTATION-PLAN.md#architecture-validation) |
 
 **Validation Commands**:
 ```bash
