@@ -651,6 +651,12 @@ Example:
 - **Rationale**: Keep main clean with planning docs, squash merge when complete
 - **Impact**: `feature/adobe-campaign-implementation` branch created, allows clean PR workflow
 
+**Decision 7**: Implement-then-test approach (not TDD) for take-home assignment
+- **Rationale**: Adobe time budget is 2-3 hours; TDD would add ~15-20 min per phase
+- **Trade-off**: Faster delivery vs. comprehensive test-first approach
+- **Mitigation**: Phase 6 comprehensive integration tests, call out in demo video
+- **Video Talking Point**: "In production projects, I typically use strict TDD with pre-commit gates. For this time-constrained take-home, I implemented then tested, but comprehensive integration tests ensure quality."
+
 ### Implementation Progress
 
 **Phase 1 Complete** (15 minutes - Claude Code)
