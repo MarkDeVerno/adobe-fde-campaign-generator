@@ -13,7 +13,7 @@ azure-ai-contentsafety==1.0.0
 requests==2.31.0
 
 # Image processing
-Pillow==10.1.0
+Pillow>=10.3.0
 
 # Async
 aiohttp==3.9.1

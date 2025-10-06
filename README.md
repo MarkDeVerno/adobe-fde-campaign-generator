@@ -2,7 +2,7 @@
 
 > AI-powered marketing campaign asset generator using Azure OpenAI (DALL-E 3, GPT-4o) and Azure AI Services
 
-[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Azure](https://img.shields.io/badge/azure-openai-0078D4.svg)](https://azure.microsoft.com/en-us/products/ai-services/openai-service)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
@@ -104,7 +104,7 @@ This project demonstrates **technical approach, problem-solving, and creative te
 - **Azure OpenAI** access (DALL-E 3 and GPT-4o models)
 - **Azure AI Content Safety** resource
 - **Azure Translator** resource (optional - for multi-language campaigns)
-- **Python 3.11+** installed locally
+- **Python 3.10+** installed locally
 - **Git** for version control
 
 ### Azure Resource Setup
@@ -138,17 +138,24 @@ cd adobe-fde-campaign-generator
 ### 2. Create Virtual Environment
 
 ```bash
-# Create venv
+# Create venv (Linux/macOS - use python3 if you only have one version)
 python3.11 -m venv venv
+# OR
+python3 -m venv venv
+
+# Create venv (Windows - use py or python)
+py -3.11 -m venv venv
+# OR (if py doesn't work or you only have one version)
+python -m venv venv
 
 # Activate (Linux/macOS)
 source venv/bin/activate
 
 # Activate (Windows PowerShell)
-# venv\Scripts\Activate.ps1
+venv\Scripts\Activate.ps1
 
 # Activate (Windows CMD)
-# venv\Scripts\activate.bat
+venv\Scripts\activate.bat
 ```
 
 ### 3. Install Dependencies
