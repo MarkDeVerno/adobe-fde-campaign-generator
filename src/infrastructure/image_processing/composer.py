@@ -238,7 +238,7 @@ class ImageComposer:
 
         # Create a copy to avoid modifying original
         img_with_text = image.copy()
-        draw = ImageDraw.Draw(img_with_text, 'RGBA')
+        draw = ImageDraw.Draw(img_with_text)
 
         # Calculate available space
         img_width, img_height = img_with_text.size
