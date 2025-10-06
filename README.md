@@ -324,8 +324,13 @@ adobe-fde-campaign-generator/
 │   └── integration/             # Integration tests
 │       └── test_campaign_pipeline.py
 ├── assets/
-│   └── samples/                 # Sample campaigns
-│       └── campaign_example.yaml
+│   └── samples/                 # Sample campaigns (6 demos)
+│       ├── basic-campaign.yaml
+│       ├── translation.yaml
+│       ├── legal-content-check.yaml
+│       ├── brand-compliance-check.yaml
+│       ├── asset-input-demo.yaml
+│       └── asset-reuse-performance.yaml
 ├── outputs/                     # Generated assets + message markdown (gitignored)
 ├── requirements.txt             # Python dependencies
 ├── campaign-generator           # CLI executable
