@@ -184,12 +184,10 @@ class TestComplianceChecks:
                 mock_response.sexual_result.severity = 0
                 mock_response.violence_result.severity = 0
 
-                # Simulate blocklist matches
-                mock_match = MagicMock()
-                mock_item = MagicMock()
-                mock_item.text = "guaranteed results"
-                mock_match.blocklist_items_matched = [mock_item]
-                mock_response.blocklists_match_results = [mock_match]
+                # Simulate blocklist matches (correct Azure API format)
+                mock_response.blocklists_match = [
+                    {'blocklistItemText': 'guaranteed results'}
+                ]
 
                 mock_client.return_value.analyze_text.return_value = mock_response
 

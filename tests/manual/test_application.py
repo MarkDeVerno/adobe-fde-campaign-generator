@@ -55,7 +55,7 @@ async def test_campaign_validation():
     orchestrator = CampaignOrchestrator(enable_compliance_check=False)
 
     # Test with valid campaign
-    with open('assets/samples/campaign_example.yaml', 'r') as f:
+    with open('assets/samples/basic-campaign.yaml', 'r') as f:
         campaign_data = yaml.safe_load(f)
         campaign = Campaign(**campaign_data)
 
