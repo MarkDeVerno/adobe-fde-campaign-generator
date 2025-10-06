@@ -1,7 +1,7 @@
-# Healthcare Campaign - Demonstrates Legal Compliance Checks
-# This sample includes terms that would trigger Azure Content Safety blocklist
+# Legal Content Check - Demonstrates Azure Content Safety Compliance
+# Tests prohibited advertising term detection via Azure Content Safety blocklist
 
-campaign_id: healthcare-wellness-2025
+campaign_id: legal-content-check-2025
 
 products:
   - name: "VitalTracker Pro"

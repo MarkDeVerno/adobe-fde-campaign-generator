@@ -1,7 +1,7 @@
-# Luxury Fashion Campaign - Demonstrates Brand Guidelines Enforcement
-# Shows brand consistency validation with premium color palette
+# Brand Compliance Check - Demonstrates Brand Guidelines Enforcement
+# Tests brand consistency validation with premium color palette and logo requirements
 
-campaign_id: luxury-autumn-collection-2025
+campaign_id: brand-compliance-luxury-2025
 
 products:
   - name: "Heritage Leather Tote"
@@ -14,7 +14,7 @@ target_market: "Europe & Middle East"
 
 target_audience: "Affluent consumers aged 35-60, luxury fashion enthusiasts, heritage brand collectors"
 
-campaign_message: "Timeless elegance. Crafted for generations."
+campaign_message: "Enduring artistry. A legacy reimagined for today's connoisseurs."
 
 brand_guidelines:
   primary_color: "#1A1A1A"      # Sophisticated black
