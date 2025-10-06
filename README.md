@@ -10,7 +10,7 @@
 
 This project demonstrates **technical approach, problem-solving, and creative technology integration** for enterprise AI orchestration:
 
-- **Clean Architecture**: Domain-driven design with testability and extensibility (prepares for Claude Code/n8n enhancement)
+- **Clean Architecture**: Domain-driven design with testability and extensibility
 - **Creative Technology Integration**: DALL-E 3 + GPT-4o + Content Safety + Translator APIs working together in a 7-step pipeline
 - **Problem-Solving**: Dynamic text fitting, Azure API debugging, compliance ambiguity resolution, systematic gap analysis (27/30 → 100%)
 - **Async Concurrency**: 75% performance improvement through parallel image generation (asyncio.gather)
@@ -21,6 +21,12 @@ This project demonstrates **technical approach, problem-solving, and creative te
 > **⚡ Performance Highlight**: Async/await concurrency reduces 6-image generation from 30s (sequential) to 5s (parallel) - see [Architecture Diagram](docs/Architecture-Diagram.md)
 >
 > **🔧 Problem-Solving Example**: Dynamic text fitting algorithm scales fonts from 60pt → 16pt with multi-line wrapping to prevent overflow on square images - see [Technical Approach](docs/Technical-Approach.md)
+
+---
+
+**📋 For Evaluators**: See [Executive Summary](docs/Executive-Summary.md) for a 2-minute overview of architecture decisions, problem-solving approach, and implementation methodology.
+
+---
 
 ## Features
 
@@ -271,6 +277,21 @@ brand_guidelines:
 3. **Translated** (Translator API): "为明天的地球而创新" (Chinese for APAC market)
 4. **Applied**: Text overlay on final composed images
 
+### Sample Campaigns
+
+Six demonstration campaigns showcasing different features:
+
+| Sample | Feature Demonstrated | Command |
+|--------|---------------------|---------|
+| `basic-campaign.yaml` | Core workflow (2 products, 3 aspect ratios) | `./campaign-generator generate -f assets/samples/basic-campaign.yaml` |
+| `translation.yaml` | Multi-language translation (APAC → Chinese) | `./campaign-generator generate -f assets/samples/translation.yaml` |
+| `legal-content-check.yaml` | Compliance validation (triggers warnings) | `./campaign-generator generate -f assets/samples/legal-content-check.yaml` |
+| `brand-compliance-check.yaml` | Brand guidelines enforcement | `./campaign-generator generate -f assets/samples/brand-compliance-check.yaml` |
+| `asset-input-demo.yaml` | User-provided product photos | `./campaign-generator generate -f assets/samples/asset-input-demo.yaml` |
+| `asset-reuse-performance.yaml` | Caching optimization (run twice) | `./campaign-generator generate -f assets/samples/asset-reuse-performance.yaml` |
+
+> See [assets/samples/README.md](assets/samples/README.md) for detailed documentation of each sample.
+
 ## Architecture
 
 ### Project Structure
@@ -474,7 +495,7 @@ black src/
 - **Time Constraint**: 2-3 hour assignment window
 - **Architecture Showcase**: Clean Architecture, async/await, type safety (Pydantic) easier to demonstrate
 - **Orchestration Focus**: CLI shows pipeline thinking without UI complexity
-- **Extensibility**: Can be wrapped by n8n/web layer later (shows forward thinking)
+- **Extensibility**: Modular design enables future API/web layer integration
 
 **Trade-off**: Less visual demo vs. clearer code architecture
 
@@ -601,15 +622,6 @@ This project is designed to be enhanced with Claude Code (Anthropic's AI coding 
 - Generates type-safe code with comprehensive tests
 - Integrates with existing Azure infrastructure
 
-### n8n Workflow Automation
-
-**Visual Workflow Capabilities**:
-- 🔄 Scheduled campaign generation
-- 🔄 Webhook-triggered asset creation
-- 🔄 Multi-platform distribution (Instagram, Facebook, Twitter)
-- 🔄 Approval workflows for compliance
-- 🔄 Performance analytics integration
-
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details
@@ -619,7 +631,6 @@ MIT License - see [LICENSE](LICENSE) file for details
 - **Azure OpenAI** for DALL-E 3 access
 - **Azure AI Services** for Content Safety API
 - **Anthropic** for Claude Code development workflow
-- **n8n** for future workflow automation capabilities
 
 ## Contact
 

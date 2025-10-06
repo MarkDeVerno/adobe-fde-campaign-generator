@@ -50,7 +50,7 @@
 ## Technical Foundation
 
 **Development**:
-- Claude Sonnet 4.5 via Claude Code CLI (55% code generation, ~55 min saved)
+- Claude Sonnet 4.5 via Claude Code CLI (100% code generation, except .env configuration and Azure resource setup)
 - Standalone execution: Zero AI runtime dependencies
 
 **Integration**:
@@ -86,7 +86,7 @@
 2. **Long Message Overflow**: Luxury campaign messages overflowed on square images → Dynamic font sizing algorithm (60pt → 16pt adaptive scaling) + textwrap multi-line support
 3. **AI Missed Requirements**: Initial Claude implementation 27/30 (90%) → Manual systematic gap analysis → 3 missing items identified → 100% coverage achieved
 4. **Compliance Ambiguity**: Vague "legal checks" requirement → Azure Content Safety with custom blocklist (exceeded simple regex approach)
-5. **Blocklist API Bug**: Azure returns `blocklists_match` not `blocklists_match_results` → Silent failure detection → Code fix → Healthcare demo now correctly fails
+5. **Brand Compliance Scope**: AI incorrectly assessed we had full compliance checking (logo detection, color validation) → Manual analysis revealed we only had data capture → Created detailed implementation estimate (12-15h basic, 20-25h robust) → Positioned as architecture foundation
 
 **Creative Technology Integration**:
 - **DALL-E 3**: Professional product photography generation with quality/size parameters
