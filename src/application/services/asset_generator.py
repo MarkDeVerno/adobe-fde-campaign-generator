@@ -74,8 +74,7 @@ class AssetGeneratorService:
             for aspect_ratio in aspect_ratios:
                 task = self._generate_single_asset(
                     campaign=campaign,
-                    product_name=product.name,
-                    product_description=product.description,
+                    product=product,
                     aspect_ratio=aspect_ratio
                 )
                 tasks.append(task)
@@ -110,8 +109,7 @@ class AssetGeneratorService:
     async def _generate_single_asset(
         self,
         campaign: Campaign,
-        product_name: str,
-        product_description: str,
+        product,
         aspect_ratio: AspectRatio
     ) -> Optional[Asset]:
         """
@@ -119,8 +117,7 @@ class AssetGeneratorService:
 
         Args:
             campaign: Campaign context
-            product_name: Product name
-            product_description: Product description
+            product: Product object with name, description, and optional input_asset
             aspect_ratio: Target aspect ratio
 
         Returns:
@@ -129,32 +126,47 @@ class AssetGeneratorService:
         try:
             # Create subdirectory structure: outputs/{product_name}/{aspect_ratio}/
             aspect_ratio_str = aspect_ratio.value.replace(':', 'x')
-            product_dir = self.output_dir / product_name / aspect_ratio_str
+            product_dir = self.output_dir / product.name / aspect_ratio_str
             product_dir.mkdir(parents=True, exist_ok=True)
 
             # Generate filename
-            filename = f"{campaign.campaign_id}_{product_name}_{aspect_ratio_str}.png"
+            filename = f"{campaign.campaign_id}_{product.name}_{aspect_ratio_str}.png"
             file_path = product_dir / filename
 
             # Check cache if enabled
             if self.enable_caching and file_path.exists():
                 logger.info(
                     "Reusing cached asset",
-                    product=product_name,
+                    product=product.name,
                     aspect_ratio=aspect_ratio.value,
                     path=str(file_path)
                 )
                 return Asset(
-                    product_name=product_name,
+                    product_name=product.name,
                     aspect_ratio=aspect_ratio,
                     file_path=str(file_path),
                     was_reused=True
                 )
 
+            # Check if product has input asset
+            if product.input_asset:
+                logger.info(
+                    "Using input asset",
+                    product=product.name,
+                    input_path=product.input_asset,
+                    aspect_ratio=aspect_ratio.value
+                )
+                return await self._load_input_asset(
+                    product=product,
+                    aspect_ratio=aspect_ratio,
+                    output_path=file_path,
+                    campaign_id=campaign.campaign_id
+                )
+
             # Build prompt
             prompt = self._build_generation_prompt(
-                product_name=product_name,
-                product_description=product_description,
+                product_name=product.name,
+                product_description=product.description,
                 target_audience=campaign.target_audience,
                 target_market=campaign.target_market
             )
@@ -165,7 +177,7 @@ class AssetGeneratorService:
 
             logger.info(
                 "Generating new asset",
-                product=product_name,
+                product=product.name,
                 aspect_ratio=aspect_ratio.value,
                 size=size
             )
@@ -178,7 +190,7 @@ class AssetGeneratorService:
             )
 
             if not image_url:
-                logger.error("Failed to generate image", product=product_name)
+                logger.error("Failed to generate image", product=product.name)
                 return None
 
             # Download image
@@ -188,18 +200,18 @@ class AssetGeneratorService:
             )
 
             if not download_success:
-                logger.error("Failed to download image", product=product_name)
+                logger.error("Failed to download image", product=product.name)
                 return None
 
             logger.info(
                 "Asset generated successfully",
-                product=product_name,
+                product=product.name,
                 aspect_ratio=aspect_ratio.value,
                 path=str(file_path)
             )
 
             return Asset(
-                product_name=product_name,
+                product_name=product.name,
                 aspect_ratio=aspect_ratio,
                 file_path=str(file_path),
                 was_reused=False,
@@ -209,8 +221,72 @@ class AssetGeneratorService:
         except Exception as e:
             logger.error(
                 "Error generating asset",
-                product=product_name,
+                product=product.name,
                 aspect_ratio=aspect_ratio.value,
+                error=str(e)
+            )
+            return None
+
+    async def _load_input_asset(
+        self,
+        product,
+        aspect_ratio: AspectRatio,
+        output_path: Path,
+        campaign_id: str
+    ) -> Optional[Asset]:
+        """
+        Load and resize input asset from provided path.
+
+        Args:
+            product: Product object with input_asset path
+            aspect_ratio: Target aspect ratio
+            output_path: Path to save resized image
+            campaign_id: Campaign identifier
+
+        Returns:
+            Asset object if successful, None if failed
+        """
+        try:
+            input_path = Path(product.input_asset)
+
+            # Validate input file exists
+            if not input_path.exists():
+                logger.error(
+                    "Input asset not found",
+                    product=product.name,
+                    path=str(input_path)
+                )
+                return None
+
+            # Load image
+            img = Image.open(input_path)
+
+            # Resize to target aspect ratio
+            resized_img = self.image_composer.resize_image(img, aspect_ratio)
+
+            # Save resized image
+            resized_img.save(output_path, quality=95)
+
+            logger.info(
+                "Input asset loaded and resized",
+                product=product.name,
+                input_path=str(input_path),
+                output_path=str(output_path),
+                aspect_ratio=aspect_ratio.value
+            )
+
+            return Asset(
+                product_name=product.name,
+                aspect_ratio=aspect_ratio,
+                file_path=str(output_path),
+                was_reused=False,
+                generation_prompt=f"Input asset from {input_path}"
+            )
+
+        except Exception as e:
+            logger.error(
+                "Failed to load input asset",
+                product=product.name,
                 error=str(e)
             )
             return None

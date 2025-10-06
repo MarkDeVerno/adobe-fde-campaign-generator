@@ -9,6 +9,10 @@ class Product(BaseModel):
     """Product to be featured in campaign."""
     name: str = Field(..., min_length=1, description="Product name")
     description: str = Field(..., min_length=10, description="Product description")
+    input_asset: Optional[str] = Field(
+        default=None,
+        description="Optional path to existing product image (local file or storage path)"
+    )
 
     @field_validator('name')
     @classmethod

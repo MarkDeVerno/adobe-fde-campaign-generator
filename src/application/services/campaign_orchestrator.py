@@ -12,6 +12,7 @@ from src.domain.models.compliance import ComplianceResult
 from src.application.services.compliance_service import ComplianceService
 from src.application.services.asset_generator import AssetGeneratorService
 from src.infrastructure.azure.translator_client import TranslatorClient
+from src.infrastructure.azure.message_adapter import MessageAdapterService
 
 logger = structlog.get_logger()
 
@@ -41,6 +42,7 @@ class CampaignOrchestrator:
             output_dir=str(self.output_dir),
             enable_caching=enable_caching
         )
+        self.message_adapter = MessageAdapterService()
         self.translator_client = TranslatorClient()
 
         self.enable_compliance_check = enable_compliance_check
@@ -50,6 +52,7 @@ class CampaignOrchestrator:
             output_dir=str(self.output_dir),
             compliance_enabled=enable_compliance_check,
             caching_enabled=enable_caching,
+            message_adaptation_enabled=self.message_adapter.enabled,
             translation_enabled=self.translator_client.enabled
         )
 
@@ -118,16 +121,35 @@ class CampaignOrchestrator:
                 else:
                     logger.info("Campaign passed compliance check")
 
-            # Step 2.5: Translate campaign message based on target market (if enabled)
+            # Step 2a: Adapt campaign message for target market/audience using AI
+            logger.info("Step 2a: Adapting campaign message for target market")
+            adapted_message, adaptation_rationale = await self.message_adapter.adapt_message(
+                base_message=campaign.campaign_message,
+                target_market=campaign.target_market,
+                target_audience=campaign.target_audience,
+                brand_voice=campaign.brand_guidelines.get_brand_voice() if hasattr(campaign.brand_guidelines, 'get_brand_voice') else "innovative, authentic"
+            )
+
+            # Step 2b: Save adapted message to output folder
+            message_file_path = self.output_dir / f"{campaign.campaign_id}_message.md"
+            await self._save_message_file(
+                file_path=message_file_path,
+                campaign=campaign,
+                adapted_message=adapted_message,
+                adaptation_rationale=adaptation_rationale
+            )
+            logger.info("Campaign message saved", path=str(message_file_path))
+
+            # Step 2.5: Translate adapted message based on target market (if enabled)
             if self.translator_client.enabled:
-                logger.info("Step 2.5: Translating campaign message", target_market=campaign.target_market)
+                logger.info("Step 2.5: Translating adapted message", target_market=campaign.target_market)
                 translated_message = await self.translator_client.translate_campaign_message(
-                    message=campaign.campaign_message,
+                    message=adapted_message,
                     target_market=campaign.target_market
                 )
             else:
-                logger.info("Translation disabled, using original campaign message")
-                translated_message = campaign.campaign_message
+                logger.info("Translation disabled, using adapted message")
+                translated_message = adapted_message
 
             # Step 3: Generate images for all products and aspect ratios
             logger.info("Step 3: Generating images")
@@ -163,6 +185,8 @@ class CampaignOrchestrator:
                 "success": True,
                 "compliance_result": compliance_result,
                 "assets": final_assets,
+                "adapted_message": adapted_message,
+                "translated_message": translated_message,
                 "errors": errors
             }
 
@@ -277,4 +301,59 @@ class CampaignOrchestrator:
             assets=assets,
             campaign_message=campaign_message,
             brand_color=brand_color
+        )
+
+    async def _save_message_file(
+        self,
+        file_path: Path,
+        campaign: Campaign,
+        adapted_message: str,
+        adaptation_rationale: str
+    ) -> None:
+        """
+        Save campaign message details to markdown file.
+
+        Args:
+            file_path: Path to save message file
+            campaign: Campaign model
+            adapted_message: AI-adapted message
+            adaptation_rationale: Explanation for adaptation
+        """
+        # Build markdown content
+        content = f"""# Campaign Message: {campaign.campaign_id}
+
+## Base Message
+{campaign.campaign_message}
+
+## Adapted Message
+**{adapted_message}**
+
+### Target Market
+{campaign.target_market}
+
+### Target Audience
+{campaign.target_audience}
+
+### Brand Guidelines
+- Primary Color: {campaign.brand_guidelines.primary_color}
+- Secondary Color: {campaign.brand_guidelines.secondary_color}
+- Font Family: {campaign.brand_guidelines.font_family}
+
+## Adaptation Rationale
+{adaptation_rationale}
+
+---
+*Generated: {file_path.stem}*
+*This message was AI-adapted for maximum cultural relevance and audience engagement.*
+"""
+
+        # Write to file
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+
+        logger.info(
+            "Message file saved",
+            path=str(file_path),
+            base_message_length=len(campaign.campaign_message),
+            adapted_message_length=len(adapted_message)
         )

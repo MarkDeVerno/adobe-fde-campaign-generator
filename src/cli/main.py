@@ -116,6 +116,18 @@ def generate(campaign_file: str, output_dir: str, verbose: bool, skip_compliance
                 else:
                     print_warning(f"Compliance: {result['compliance_result'].recommendation}")
 
+            # Show message adaptation pipeline
+            if 'adapted_message' in result:
+                print_header("Message Adaptation Pipeline")
+                print_info(f"Base message: {campaign.campaign_message}")
+                print_info(f"✨ Adapted: {result['adapted_message']}")
+
+                if 'translated_message' in result and result['translated_message'] != result['adapted_message']:
+                    print_info(f"🌍 Translated: {result['translated_message']}")
+                    print_success(f"Message applied to {len(result['assets'])} assets")
+                else:
+                    print_success(f"Message applied to {len(result['assets'])} assets (no translation)")
+
             # Print asset details
             print_header("Generated Assets")
             for asset in result['assets']:
