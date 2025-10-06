@@ -329,5 +329,5 @@ class TestAssetGeneration:
     def test_aspect_ratio_dimensions(self):
         """Test aspect ratio dimension mappings."""
         assert AspectRatio.SQUARE.dimensions == (1024, 1024)
-        assert AspectRatio.STORY.dimensions == (1024, 1820)
-        assert AspectRatio.WIDE.dimensions == (1820, 1024)
+        assert AspectRatio.STORY.dimensions == (1024, 1792)
+        assert AspectRatio.WIDE.dimensions == (1792, 1024)

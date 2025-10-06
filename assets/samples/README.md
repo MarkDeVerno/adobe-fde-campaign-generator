@@ -65,26 +65,66 @@ This directory contains sample campaign YAML files demonstrating different featu
 
 ---
 
-### 4. `global-multilingual-demo.yaml` - Translation Readiness
-**Purpose**: Demonstrates multi-market architecture and translation support
+### 4. `global-multilingual-demo.yaml` - APAC Translation Demo
+**Purpose**: Demonstrates Azure Translator Text API integration (English → Simplified Chinese)
 **Features**:
-- 🌐 Global multi-market targeting (EMEA, APAC, Americas)
-- 🔤 Translation-ready message structure
-- 🖋️ Multilingual-friendly font (Inter supports Latin, Cyrillic, Greek)
+- 🌏 APAC market targeting triggers automatic translation to zh-Hans
+- 🔤 Campaign message translates: "Your home, smarter" → "你的家，更智能"
+- 🖋️ CJK-compatible font (Inter supports Chinese characters)
 - 🏠 Smart home products (SmartHome Hub, EcoSensor Kit)
 
-**Best for**: Understanding translation architecture, global campaign planning
+**Best for**: Testing translation feature, understanding locale mapping
 
-**Expected outcome**: Clean generation, demonstrates translation readiness
+**Expected outcome**:
+- **With Azure Translator configured**: Message overlays in Simplified Chinese
+- **Without configuration**: Falls back to English (graceful degradation)
 
-**Notes**:
-- Architecture supports Azure Translator Text API (not yet integrated)
-- Campaign message structure optimized for localization
-- Font choice supports international character sets
+**Run with translation enabled**:
+```bash
+# Set environment variables first
+export AZURE_TRANSLATOR_KEY=your-key-here
+export AZURE_TRANSLATOR_REGION=eastus
+
+# Generate campaign (message will be translated)
+./campaign-generator generate -f assets/samples/global-multilingual-demo.yaml --skip-compliance
+```
+
+**Market-to-Locale Mapping**:
+- APAC → zh-Hans (Simplified Chinese)
+- Middle East → ar (Arabic)
+- Latin America → es (Spanish)
+- Europe/North America → en (English)
 
 ---
 
-### 5. `asset-reuse-performance.yaml` - Caching & Performance
+### 5. `middle-east-translation-demo.yaml` - Arabic Translation Demo
+**Purpose**: Demonstrates Azure Translator Text API integration (English → Arabic)
+**Features**:
+- 🌍 Middle East market targeting triggers automatic translation to Arabic (ar)
+- 🔤 Campaign message translates: "Trust. Security. Growth." → "الثقة. الأمان. النمو."
+- 🖋️ Arabic script support (Noto Sans Arabic font)
+- 💰 Financial products (SecurePay Pro, WealthGuard Elite)
+- 📖 Right-to-left text rendering for Arabic
+
+**Best for**: Testing Arabic translation, understanding RTL text handling
+
+**Expected outcome**:
+- **With Azure Translator configured**: Message overlays in Arabic script
+- **Without configuration**: Falls back to English
+
+**Run with translation enabled**:
+```bash
+# Set environment variables first
+export AZURE_TRANSLATOR_KEY=your-key-here
+export AZURE_TRANSLATOR_REGION=eastus
+
+# Generate campaign (message will be translated to Arabic)
+./campaign-generator generate -f assets/samples/middle-east-translation-demo.yaml --skip-compliance
+```
+
+---
+
+### 6. `asset-reuse-performance.yaml` - Caching & Performance
 **Purpose**: Demonstrates asset reuse and caching optimization
 **Features**:
 - 📁 Filename-based caching system
@@ -111,15 +151,16 @@ This directory contains sample campaign YAML files demonstrating different featu
 
 ## Feature Coverage Matrix
 
-| Sample | Brand Guidelines | Compliance Check | Translation Ready | Caching Demo | Market Type |
-|--------|-----------------|------------------|-------------------|--------------|-------------|
-| `campaign_example.yaml` | ✅ Basic | ✅ Clean | ⊡ Partial | ⊡ Implicit | B2C APAC |
-| `healthcare-compliance-demo.yaml` | ✅ Medical | 🚨 **Triggers** | ⊡ Partial | ⊡ Implicit | B2C Healthcare |
-| `luxury-brand-guidelines.yaml` | ✅ **Premium** | ✅ Clean | ⊡ Partial | ⊡ Implicit | B2C Luxury |
-| `global-multilingual-demo.yaml` | ✅ Tech | ✅ Clean | ✅ **Optimized** | ⊡ Implicit | B2C Global |
-| `asset-reuse-performance.yaml` | ✅ Enterprise | ✅ Clean | ⊡ Partial | ✅ **Explicit** | B2B Enterprise |
+| Sample | Brand Guidelines | Compliance Check | Translation | Caching Demo | Market Type |
+|--------|-----------------|------------------|-------------|--------------|-------------|
+| `campaign_example.yaml` | ✅ Basic | ✅ Clean | ⊡ N/A (en→en) | ⊡ Implicit | B2C APAC |
+| `healthcare-compliance-demo.yaml` | ✅ Medical | 🚨 **Triggers** | ⊡ N/A | ⊡ Implicit | B2C Healthcare |
+| `luxury-brand-guidelines.yaml` | ✅ **Premium** | ✅ Clean | ⊡ N/A | ⊡ Implicit | B2C Luxury |
+| `global-multilingual-demo.yaml` | ✅ Tech | ✅ Clean | ✅ **zh-Hans** | ⊡ Implicit | B2C APAC |
+| `middle-east-translation-demo.yaml` | ✅ Financial | ✅ Clean | ✅ **Arabic** | ⊡ Implicit | B2C MENA |
+| `asset-reuse-performance.yaml` | ✅ Enterprise | ✅ Clean | ⊡ N/A | ✅ **Explicit** | B2B Enterprise |
 
-**Legend**: ✅ Full support | ⊡ Partial/Implicit | 🚨 Intentionally triggers warnings
+**Legend**: ✅ Full support | ⊡ Partial/N/A | 🚨 Intentionally triggers warnings
 
 ---
 
@@ -138,10 +179,13 @@ Run all samples sequentially to see full system capabilities:
 # 3. Brand consistency
 ./campaign-generator generate -f assets/samples/luxury-brand-guidelines.yaml --skip-compliance
 
-# 4. Global/translation architecture
+# 4. Translation demo - APAC (English → Simplified Chinese)
 ./campaign-generator generate -f assets/samples/global-multilingual-demo.yaml --skip-compliance
 
-# 5. Performance/caching (run twice)
+# 5. Translation demo - Middle East (English → Arabic)
+./campaign-generator generate -f assets/samples/middle-east-translation-demo.yaml --skip-compliance
+
+# 6. Performance/caching (run twice to see reuse)
 ./campaign-generator generate -f assets/samples/asset-reuse-performance.yaml --skip-compliance
 ./campaign-generator generate -f assets/samples/asset-reuse-performance.yaml --skip-compliance
 ```

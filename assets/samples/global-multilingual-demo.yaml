@@ -1,7 +1,7 @@
-# Global Tech Campaign - Demonstrates Multi-Market & Translation Readiness
-# Architecture supports future translation service integration
+# APAC Campaign - Demonstrates Azure Translator Text API Integration
+# Message automatically translates from English to Simplified Chinese (zh-Hans)
 
-campaign_id: global-tech-launch-2025
+campaign_id: global-tech-apac-2025
 
 products:
   - name: "SmartHome Hub"
@@ -10,23 +10,29 @@ products:
   - name: "EcoSensor Kit"
     description: "Wireless environmental monitoring system tracks air quality, temperature, humidity with mobile alerts"
 
-target_market: "Global (EMEA, APAC, Americas)"
+# Translation Demo: APAC market triggers automatic translation to Simplified Chinese
+target_market: "APAC"
 
 target_audience: "Tech-savvy homeowners aged 28-45, early adopters, smart home enthusiasts, sustainability-focused"
 
-# Campaign message in English (translation architecture ready)
+# Campaign message (English) - will be translated to Simplified Chinese (zh-Hans)
+# Original: "Your home, smarter. Your planet, better."
+# Translated: "你的家，更智能。你的星球，更美好。"
 campaign_message: "Your home, smarter. Your planet, better."
 
 brand_guidelines:
   primary_color: "#00BCD4"      # Tech cyan
   secondary_color: "#FF6F00"    # Innovation orange
   logo_required: true
-  font_family: "Inter"          # Modern, multilingual-friendly font
+  font_family: "Inter"          # Supports CJK (Chinese, Japanese, Korean) characters
 
-# Notes for testing:
-# - Multi-market targeting: EMEA, APAC, Americas
-# - Campaign message structure supports translation
-# - Font choice (Inter) supports Latin, Cyrillic, Greek scripts
-# - Product descriptions are concise for translation efficiency
-# - Expected: Clean compliance, architecture demonstrates translation readiness
-# - Future enhancement: Azure Translator Text API integration
+# Expected Behavior:
+# 1. Campaign message translates from "en" to "zh-Hans" automatically
+# 2. Translated text overlays on generated assets
+# 3. Font (Inter) supports Chinese characters for proper rendering
+# 4. If Azure Translator is not configured, falls back to English message
+#
+# To enable translation:
+# - Set AZURE_TRANSLATOR_KEY in .env
+# - Set AZURE_TRANSLATOR_REGION=eastus
+# - See .env.template for full configuration

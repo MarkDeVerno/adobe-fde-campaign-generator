@@ -10,6 +10,7 @@ azure-ai-formrecognizer==3.3.0
 azure-core==1.29.5
 openai==2.1.0
 azure-ai-contentsafety==1.0.0
+requests==2.31.0
 
 # Image processing
 Pillow==10.1.0

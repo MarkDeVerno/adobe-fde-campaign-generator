@@ -11,6 +11,7 @@ from src.domain.models.asset import Asset, AspectRatio
 from src.domain.models.compliance import ComplianceResult
 from src.application.services.compliance_service import ComplianceService
 from src.application.services.asset_generator import AssetGeneratorService
+from src.infrastructure.azure.translator_client import TranslatorClient
 
 logger = structlog.get_logger()
 
@@ -40,6 +41,7 @@ class CampaignOrchestrator:
             output_dir=str(self.output_dir),
             enable_caching=enable_caching
         )
+        self.translator_client = TranslatorClient()
 
         self.enable_compliance_check = enable_compliance_check
 
@@ -47,7 +49,8 @@ class CampaignOrchestrator:
             "Campaign orchestrator initialized",
             output_dir=str(self.output_dir),
             compliance_enabled=enable_compliance_check,
-            caching_enabled=enable_caching
+            caching_enabled=enable_caching,
+            translation_enabled=self.translator_client.enabled
         )
 
     async def generate_campaign(
@@ -115,6 +118,17 @@ class CampaignOrchestrator:
                 else:
                     logger.info("Campaign passed compliance check")
 
+            # Step 2.5: Translate campaign message based on target market (if enabled)
+            if self.translator_client.enabled:
+                logger.info("Step 2.5: Translating campaign message", target_market=campaign.target_market)
+                translated_message = await self.translator_client.translate_campaign_message(
+                    message=campaign.campaign_message,
+                    target_market=campaign.target_market
+                )
+            else:
+                logger.info("Translation disabled, using original campaign message")
+                translated_message = campaign.campaign_message
+
             # Step 3: Generate images for all products and aspect ratios
             logger.info("Step 3: Generating images")
             generated_assets = await self.generate_images(
@@ -132,10 +146,10 @@ class CampaignOrchestrator:
                 }
 
             # Step 4: Compose final assets (add campaign message overlay)
-            logger.info("Step 4: Composing final assets")
+            logger.info("Step 4: Composing final assets", message_translated=self.translator_client.enabled)
             final_assets = await self.compose_assets(
                 assets=generated_assets,
-                campaign_message=campaign.campaign_message,
+                campaign_message=translated_message,
                 brand_color=campaign.brand_guidelines.primary_color
             )
 
