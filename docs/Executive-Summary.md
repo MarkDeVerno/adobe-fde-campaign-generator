@@ -74,6 +74,8 @@
   - Resolution: Azure Content Safety API vs. regex (demonstrates ecosystem depth)
 - **AI Missed Requirements**: Initial AI implementation 27/30 (90%) → systematic verification → 3 gaps found → 100% coverage
 - **Configuration Issues**: Azure endpoint conflicts → systematic debugging → TROUBLESHOOTING.md documentation
+- **Dynamic Text Fitting**: Long messages overflowed on images (especially luxury campaign on square 1:1 aspect ratio)
+  - Resolution: Implemented dynamic font sizing with multi-line wrapping (60pt → 16pt adaptive scaling, textwrap algorithm)
 
 ---
 

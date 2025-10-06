@@ -2,8 +2,9 @@
 Image composition service using Pillow for text overlay and resizing.
 """
 from PIL import Image, ImageDraw, ImageFont
-from typing import Tuple
+from typing import Tuple, Optional
 import os
+import textwrap
 import structlog
 
 from src.domain.models.asset import AspectRatio
@@ -20,14 +21,17 @@ class ImageComposer:
 
         Args:
             font_path: Path to TrueType font file (None uses default)
-            font_size: Font size for campaign message
+            font_size: Default font size for campaign message
         """
-        self.font_size = font_size
+        self.default_font_size = font_size
+        self.font_path = None  # Will store the path to loaded font
+        self.use_default_font = False
 
         # Try to load custom font, fall back to default
         try:
             if font_path and os.path.exists(font_path):
-                self.font = ImageFont.truetype(font_path, self.font_size)
+                self.font_path = font_path
+                self.font = ImageFont.truetype(font_path, self.default_font_size)
                 logger.info("Loaded custom font", path=font_path)
             else:
                 # Try common system fonts (prefer multi-language fonts for localization)
@@ -49,20 +53,23 @@ class ImageComposer:
                     "C:\\Windows\\Fonts\\arial.ttf"  # Windows - Latin
                 ]:
                     if os.path.exists(font_name):
-                        self.font = ImageFont.truetype(font_name, self.font_size)
+                        self.font_path = font_name
+                        self.font = ImageFont.truetype(font_name, self.default_font_size)
                         font_loaded = True
-                        logger.info("Loaded system font", path=font_name, size=self.font_size)
+                        logger.info("Loaded system font", path=font_name, size=self.default_font_size)
                         break
 
                 if not font_loaded:
                     # Fall back to default PIL font with size
-                    self.font = ImageFont.load_default(size=self.font_size)
-                    logger.warning("Using default PIL font (limited quality)", size=self.font_size)
+                    self.use_default_font = True
+                    self.font = ImageFont.load_default(size=self.default_font_size)
+                    logger.warning("Using default PIL font (limited quality)", size=self.default_font_size)
         except Exception as e:
             logger.warning("Failed to load font, using default", error=str(e))
+            self.use_default_font = True
             # Use modern load_default with size parameter (Pillow 10.0+)
             try:
-                self.font = ImageFont.load_default(size=self.font_size)
+                self.font = ImageFont.load_default(size=self.default_font_size)
             except TypeError:
                 # Fallback for older Pillow versions
                 self.font = ImageFont.load_default()
@@ -96,6 +103,112 @@ class ImageComposer:
 
         return resized
 
+    def _load_font_at_size(self, size: int) -> ImageFont.FreeTypeFont:
+        """
+        Load font at specified size.
+
+        Args:
+            size: Font size in points
+
+        Returns:
+            Font object at specified size
+        """
+        if self.use_default_font:
+            try:
+                return ImageFont.load_default(size=size)
+            except TypeError:
+                return ImageFont.load_default()
+        elif self.font_path:
+            return ImageFont.truetype(self.font_path, size)
+        else:
+            return ImageFont.load_default()
+
+    def _calculate_optimal_font_size(
+        self,
+        text: str,
+        max_width: int,
+        max_height: int,
+        max_font_size: int = 60,
+        min_font_size: int = 16
+    ) -> Tuple[ImageFont.FreeTypeFont, str]:
+        """
+        Calculate optimal font size to fit text within bounds.
+        Supports multi-line text wrapping if needed.
+
+        Args:
+            text: Text to fit
+            max_width: Maximum width in pixels
+            max_height: Maximum height in pixels
+            max_font_size: Maximum font size to try
+            min_font_size: Minimum font size fallback
+
+        Returns:
+            Tuple of (optimal_font, wrapped_text)
+        """
+        # Start with maximum font size and decrease until text fits
+        for size in range(max_font_size, min_font_size - 1, -2):
+            font = self._load_font_at_size(size)
+
+            # Try without wrapping first
+            dummy_draw = ImageDraw.Draw(Image.new('RGB', (1, 1)))
+            bbox = dummy_draw.textbbox((0, 0), text, font=font)
+            text_width = bbox[2] - bbox[0]
+            text_height = bbox[3] - bbox[1]
+
+            if text_width <= max_width and text_height <= max_height:
+                logger.info(
+                    "Found optimal font size (single line)",
+                    size=size,
+                    text_width=text_width,
+                    text_height=text_height,
+                    max_width=max_width,
+                    max_height=max_height
+                )
+                return font, text
+
+            # Try with text wrapping
+            # Estimate characters per line based on average character width
+            avg_char_width = text_width / len(text) if len(text) > 0 else 10
+            chars_per_line = int(max_width / avg_char_width) if avg_char_width > 0 else 40
+
+            # Wrap text
+            wrapped_lines = textwrap.wrap(text, width=max(chars_per_line, 10))
+            wrapped_text = '\n'.join(wrapped_lines)
+
+            # Measure wrapped text
+            bbox = dummy_draw.textbbox((0, 0), wrapped_text, font=font)
+            text_width = bbox[2] - bbox[0]
+            text_height = bbox[3] - bbox[1]
+
+            if text_width <= max_width and text_height <= max_height:
+                logger.info(
+                    "Found optimal font size (multi-line)",
+                    size=size,
+                    lines=len(wrapped_lines),
+                    text_width=text_width,
+                    text_height=text_height,
+                    max_width=max_width,
+                    max_height=max_height
+                )
+                return font, wrapped_text
+
+        # Fallback to minimum size with wrapping
+        font = self._load_font_at_size(min_font_size)
+        dummy_draw = ImageDraw.Draw(Image.new('RGB', (1, 1)))
+        bbox = dummy_draw.textbbox((0, 0), text, font=font)
+        text_width = bbox[2] - bbox[0]
+        avg_char_width = text_width / len(text) if len(text) > 0 else 10
+        chars_per_line = int(max_width / avg_char_width) if avg_char_width > 0 else 40
+        wrapped_lines = textwrap.wrap(text, width=max(chars_per_line, 10))
+        wrapped_text = '\n'.join(wrapped_lines)
+
+        logger.warning(
+            "Using minimum font size",
+            size=min_font_size,
+            text_length=len(text)
+        )
+        return font, wrapped_text
+
     def add_text_overlay(
         self,
         image: Image.Image,
@@ -106,7 +219,8 @@ class ImageComposer:
         background_opacity: int = 180
     ) -> Image.Image:
         """
-        Add text overlay to image.
+        Add text overlay to image with dynamic font sizing.
+        Automatically reduces font size and wraps text to fit within image bounds.
 
         Args:
             image: Source image
@@ -126,18 +240,33 @@ class ImageComposer:
         img_with_text = image.copy()
         draw = ImageDraw.Draw(img_with_text, 'RGBA')
 
-        # Calculate text size
-        bbox = draw.textbbox((0, 0), text, font=self.font)
+        # Calculate available space
+        img_width, img_height = img_with_text.size
+        padding = 20
+
+        # Reserve 25% of image height for text overlay (max)
+        max_text_height = int(img_height * 0.25)
+        # Use 90% of image width for text (leaving margins)
+        max_text_width = int(img_width * 0.9)
+
+        # Calculate optimal font size and wrapped text
+        optimal_font, wrapped_text = self._calculate_optimal_font_size(
+            text=text,
+            max_width=max_text_width,
+            max_height=max_text_height - (padding * 2),  # Account for padding
+            max_font_size=60,
+            min_font_size=16
+        )
+
+        # Measure actual text dimensions with optimal font
+        bbox = draw.textbbox((0, 0), wrapped_text, font=optimal_font)
         text_width = bbox[2] - bbox[0]
         text_height = bbox[3] - bbox[1]
 
-        # Add padding
-        padding = 20
+        # Calculate background bar height
         bar_height = text_height + (padding * 2)
 
         # Calculate position
-        img_width, img_height = img_with_text.size
-
         if position == "bottom":
             bar_y = img_height - bar_height
         elif position == "top":
@@ -158,13 +287,15 @@ class ImageComposer:
 
         # Draw text
         fg_color = self._hex_to_rgb(text_color)
-        draw.text((text_x, text_y), text, font=self.font, fill=fg_color)
+        draw.text((text_x, text_y), wrapped_text, font=optimal_font, fill=fg_color)
 
         logger.info(
             "Added text overlay",
             text_length=len(text),
+            wrapped_lines=wrapped_text.count('\n') + 1,
             position=position,
-            text_size=(text_width, text_height)
+            text_size=(text_width, text_height),
+            font_size=optimal_font.size if hasattr(optimal_font, 'size') else "unknown"
         )
 
         return img_with_text
