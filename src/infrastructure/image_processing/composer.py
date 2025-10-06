@@ -28,24 +28,45 @@ class ImageComposer:
         try:
             if font_path and os.path.exists(font_path):
                 self.font = ImageFont.truetype(font_path, self.font_size)
+                logger.info("Loaded custom font", path=font_path)
             else:
-                # Try common system fonts
+                # Try common system fonts (prefer multi-language fonts for localization)
+                font_loaded = False
                 for font_name in [
-                    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",  # Linux
-                    "/System/Library/Fonts/Helvetica.ttc",  # macOS
-                    "C:\\Windows\\Fonts\\arial.ttf"  # Windows
+                    # Multi-language fonts (CJK + Arabic + Latin support)
+                    "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",  # Linux - Noto Sans CJK
+                    "/usr/share/fonts/truetype/noto/NotoSansCJK-Bold.ttc",  # Linux - Noto Sans CJK alt
+                    "/usr/share/fonts/truetype/noto/NotoSansArabic-Bold.ttf",  # Linux - Noto Sans Arabic (RTL)
+                    "/usr/share/fonts/truetype/noto/NotoNaskhArabic-Bold.ttf",  # Linux - Noto Naskh Arabic
+                    "/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf",  # Linux - Droid (multi-lang)
+                    "/System/Library/Fonts/PingFang.ttc",  # macOS - PingFang (CJK)
+                    "/System/Library/Fonts/GeezaPro.ttc",  # macOS - Geeza Pro (Arabic)
+                    "C:\\Windows\\Fonts\\msyh.ttc",  # Windows - Microsoft YaHei (CJK)
+                    "C:\\Windows\\Fonts\\tahoma.ttf",  # Windows - Tahoma (Arabic support)
+                    # Fallback to Latin-only fonts
+                    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",  # Linux - Latin
+                    "/System/Library/Fonts/Helvetica.ttc",  # macOS - Latin
+                    "C:\\Windows\\Fonts\\arial.ttf"  # Windows - Latin
                 ]:
                     if os.path.exists(font_name):
                         self.font = ImageFont.truetype(font_name, self.font_size)
-                        logger.info("Loaded system font", path=font_name)
+                        font_loaded = True
+                        logger.info("Loaded system font", path=font_name, size=self.font_size)
                         break
-                else:
-                    # Fall back to default PIL font
-                    self.font = ImageFont.load_default()
-                    logger.warning("Using default PIL font (limited quality)")
+
+                if not font_loaded:
+                    # Fall back to default PIL font with size
+                    self.font = ImageFont.load_default(size=self.font_size)
+                    logger.warning("Using default PIL font (limited quality)", size=self.font_size)
         except Exception as e:
             logger.warning("Failed to load font, using default", error=str(e))
-            self.font = ImageFont.load_default()
+            # Use modern load_default with size parameter (Pillow 10.0+)
+            try:
+                self.font = ImageFont.load_default(size=self.font_size)
+            except TypeError:
+                # Fallback for older Pillow versions
+                self.font = ImageFont.load_default()
+                logger.warning("Using legacy default font (no size support)")
 
     def resize_image(self, image: Image.Image, aspect_ratio: AspectRatio) -> Image.Image:
         """
@@ -98,6 +119,9 @@ class ImageComposer:
         Returns:
             Image with text overlay
         """
+        # Debug logging
+        logger.info("Adding text overlay", text=text[:100], text_len=len(text))
+
         # Create a copy to avoid modifying original
         img_with_text = image.copy()
         draw = ImageDraw.Draw(img_with_text, 'RGBA')

@@ -141,7 +141,44 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 4. Configure Environment Variables
+### 4. Install Multi-Language Font Support (Required for Localization)
+
+For localized campaigns (Chinese, Japanese, Arabic, etc.), install multi-language fonts:
+
+**Linux (Ubuntu/Debian)**:
+```bash
+sudo apt-get update
+sudo apt-get install -y fonts-noto-cjk fonts-noto-core
+```
+
+**macOS**:
+```bash
+# CJK and Arabic fonts pre-installed with system
+# No additional installation required
+```
+
+**Windows**:
+```powershell
+# CJK fonts (Microsoft YaHei) and Arabic fonts (Tahoma) pre-installed
+# No additional installation required
+```
+
+**Font Fallback Behavior**:
+- **First priority**: Noto Sans CJK (supports Chinese, Japanese, Korean)
+- **Second priority**: Noto Sans Arabic (supports Arabic, RTL languages)
+- **Fallback**: DejaVu Sans (Latin characters only - translated text shows as boxes)
+
+**Verification**:
+```bash
+# Check if CJK fonts are installed (Linux)
+fc-list | grep -i "noto.*cjk"
+
+# If no output, campaigns with Chinese/Japanese translations will show boxes instead of text
+```
+
+> **Note**: If you skip font installation, English-only campaigns will work fine. Multi-language campaigns will generate successfully but translated text overlays will display as empty boxes.
+
+### 5. Configure Environment Variables
 
 ```bash
 # Copy template
