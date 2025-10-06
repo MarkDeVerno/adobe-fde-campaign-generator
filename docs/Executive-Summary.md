@@ -28,7 +28,7 @@
 ## Execution Framework
 
 **Assignment Bonus Features (3/3 complete)**:
-- ✓ Brand compliance checks (logo presence, brand colors validation)
+- ✓ Brand guidelines support (color validation, logo tracking in domain model)
 - ✓ Legal content checks - **Exceeded**: Azure Content Safety API (ML-powered) vs. simple regex
 - ✓ Logging/reporting (structlog with JSON output)
 
@@ -76,6 +76,24 @@
 - **Configuration Issues**: Azure endpoint conflicts → systematic debugging → TROUBLESHOOTING.md documentation
 - **Dynamic Text Fitting**: Long messages overflowed on images (especially luxury campaign on square 1:1 aspect ratio)
   - Resolution: Implemented dynamic font sizing with multi-line wrapping (60pt → 16pt adaptive scaling, textwrap algorithm)
+
+---
+
+## Design Highlights
+
+**Problem-Solving Examples**:
+1. **Azure Endpoint Conflicts**: Regional vs. resource-specific endpoints causing DALL-E routing failures → Systematic debugging → TROUBLESHOOTING.md documentation for future reference
+2. **Long Message Overflow**: Luxury campaign messages overflowed on square images → Dynamic font sizing algorithm (60pt → 16pt adaptive scaling) + textwrap multi-line support
+3. **AI Missed Requirements**: Initial Claude implementation 27/30 (90%) → Manual systematic gap analysis → 3 missing items identified → 100% coverage achieved
+4. **Compliance Ambiguity**: Vague "legal checks" requirement → Azure Content Safety with custom blocklist (exceeded simple regex approach)
+5. **Blocklist API Bug**: Azure returns `blocklists_match` not `blocklists_match_results` → Silent failure detection → Code fix → Healthcare demo now correctly fails
+
+**Creative Technology Integration**:
+- **DALL-E 3**: Professional product photography generation with quality/size parameters
+- **GPT-4o**: Cultural message adaptation for target markets (exceeds "display message" requirement with AI-powered relevance)
+- **Content Safety**: ML-powered compliance checking vs. regex patterns (demonstrates Azure AI Services depth)
+- **Translator API**: Market-based automatic language detection (APAC → Chinese, Middle East → Arabic)
+- **Async Orchestration**: Concurrent image generation (asyncio.gather) achieves 75% performance improvement
 
 ---
 

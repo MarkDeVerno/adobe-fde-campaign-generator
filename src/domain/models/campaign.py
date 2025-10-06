@@ -17,6 +17,7 @@ class Product(BaseModel):
     @field_validator('name')
     @classmethod
     def validate_name(cls, v: str) -> str:
+        """Validate product name is not empty after stripping whitespace."""
         if len(v.strip()) == 0:
             raise ValueError("Product name cannot be empty")
         return v.strip()
@@ -42,6 +43,7 @@ class Campaign(BaseModel):
     @field_validator('products')
     @classmethod
     def validate_products(cls, v: List[Product]) -> List[Product]:
+        """Validate campaign has at least 2 products."""
         if len(v) < 2:
             raise ValueError("Campaign requires at least 2 products")
         return v
@@ -49,6 +51,7 @@ class Campaign(BaseModel):
     @field_validator('campaign_message')
     @classmethod
     def validate_message(cls, v: str) -> str:
+        """Validate campaign message has at least 10 characters after stripping whitespace."""
         if len(v.strip()) < 10:
             raise ValueError("Campaign message must be at least 10 characters")
         return v.strip()
