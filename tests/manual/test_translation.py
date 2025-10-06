@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Quick test script to verify Azure Translator is working."""
 import asyncio
+import pytest
 import sys
 from pathlib import Path
 from dotenv import load_dotenv
@@ -11,9 +12,10 @@ load_dotenv()
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from infrastructure.azure.translator_client import TranslatorClient
+from src.infrastructure.azure.translator_client import TranslatorClient
 
 
+@pytest.mark.asyncio
 async def test_translation():
     """Test translation from English to Chinese."""
     client = TranslatorClient()

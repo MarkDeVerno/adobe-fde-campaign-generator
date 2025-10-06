@@ -1,10 +1,12 @@
 """Test application layer services."""
 import asyncio
+import pytest
 import yaml
 from dotenv import load_dotenv
 
 load_dotenv()
 
+@pytest.mark.asyncio
 async def test_compliance_service():
     """Test compliance service."""
     from src.application.services.compliance_service import ComplianceService
@@ -20,6 +22,7 @@ async def test_compliance_service():
     recommendations = service.get_compliance_recommendations(result)
     print(f"✅ Recommendations generated: {len(recommendations)} items")
 
+@pytest.mark.asyncio
 async def test_asset_generator():
     """Test asset generator initialization."""
     from src.application.services.asset_generator import AssetGeneratorService
@@ -29,6 +32,7 @@ async def test_asset_generator():
     print(f"   Output directory: {generator.output_dir}")
     print(f"   Caching enabled: {generator.enable_caching}")
 
+@pytest.mark.asyncio
 async def test_campaign_orchestrator():
     """Test campaign orchestrator initialization."""
     from src.application.services.campaign_orchestrator import CampaignOrchestrator
@@ -42,6 +46,7 @@ async def test_campaign_orchestrator():
     print(f"   Output directory: {orchestrator.output_dir}")
     print(f"   Compliance enabled: {orchestrator.enable_compliance_check}")
 
+@pytest.mark.asyncio
 async def test_campaign_validation():
     """Test campaign validation logic."""
     from src.domain.models.campaign import Campaign

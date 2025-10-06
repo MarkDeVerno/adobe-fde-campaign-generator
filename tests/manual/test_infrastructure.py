@@ -1,10 +1,12 @@
 """Test infrastructure components."""
 import asyncio
+import pytest
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
+@pytest.mark.asyncio
 async def test_dalle():
     """Test DALL-E client."""
     from src.infrastructure.azure.dalle_client import DALLEClient
