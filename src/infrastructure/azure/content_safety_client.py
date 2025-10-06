@@ -67,12 +67,14 @@ class ContentSafetyService:
 
             # Extract blocklist matches
             blocklist_matches = []
-            if hasattr(response, 'blocklists_match_results'):
-                for match in response.blocklists_match_results:
-                    if hasattr(match, 'blocklist_items_matched'):
-                        for item in match.blocklist_items_matched:
-                            if hasattr(item, 'text'):
-                                blocklist_matches.append(item.text)
+            if hasattr(response, 'blocklists_match'):
+                for match in response.blocklists_match:
+                    # Each match is a dict with blocklistItemText
+                    if isinstance(match, dict) and 'blocklistItemText' in match:
+                        blocklist_matches.append(match['blocklistItemText'])
+                    # Handle object-based response
+                    elif hasattr(match, 'blocklist_item_text'):
+                        blocklist_matches.append(match.blocklist_item_text)
 
             # Determine if passed (no high severity, no blocklist matches)
             max_severity = max(severity_scores.values())
