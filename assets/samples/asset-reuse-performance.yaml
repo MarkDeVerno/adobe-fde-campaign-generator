@@ -1,0 +1,31 @@
+# Performance Demo - Demonstrates Asset Reuse & Caching
+# Run multiple times to see caching behavior (♻️ Reused vs ✨ Generated)
+
+campaign_id: performance-test-2025
+
+products:
+  - name: "CloudSync Pro"
+    description: "Enterprise cloud storage with real-time sync, end-to-end encryption, team collaboration tools"
+
+  - name: "DataVault Secure"
+    description: "Encrypted backup solution with automated versioning, disaster recovery, compliance reporting"
+
+target_market: "Enterprise B2B"
+
+target_audience: "IT decision-makers, CIOs, data security officers at medium-to-large enterprises"
+
+campaign_message: "Secure today. Scale tomorrow."
+
+brand_guidelines:
+  primary_color: "#1976D2"      # Professional blue
+  secondary_color: "#424242"    # Corporate gray
+  logo_required: true
+  font_family: "Roboto"
+
+# Notes for testing:
+# - First run: All 6 assets generated (2 products × 3 aspect ratios)
+# - Second run: All 6 assets reused from cache (shows ♻️ icon)
+# - Demonstrates performance optimization through filename-based caching
+# - Expected first run: ~3-4 seconds for 6 concurrent DALL-E calls
+# - Expected cached run: <1 second (no API calls, just file checks)
+# - Clean compliance check expected (professional B2B messaging)

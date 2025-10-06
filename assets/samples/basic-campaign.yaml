@@ -1,0 +1,23 @@
+# Basic Campaign Example for Adobe FDE Demo
+# US market campaign with no translation
+
+campaign_id: basic-eco-tech-2025
+
+products:
+  - name: "EcoBottle Pro"
+    description: "Sustainable water bottle with smart hydration tracking. Features BPA-free materials and connects to mobile app for daily water intake goals."
+
+  - name: "SolarCharge Mini"
+    description: "Portable solar power bank for mobile devices. Charges phones, tablets, and earbuds using renewable solar energy. Perfect for outdoor enthusiasts."
+
+target_market: "North America"
+
+target_audience: "Eco-conscious millennials and Gen Z, ages 25-35, tech-savvy professionals who prioritize sustainability"
+
+campaign_message: "Power your day, naturally. Save the planet, one charge at a time."
+
+brand_guidelines:
+  primary_color: "#2E7D32"     # Forest Green (eco-friendly theme)
+  secondary_color: "#FFC107"   # Amber (energy/solar theme)
+  logo_required: true
+  font_family: "Arial"

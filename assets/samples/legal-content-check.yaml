@@ -1,0 +1,32 @@
+# Legal Content Check - Demonstrates Azure Content Safety Compliance
+# Tests prohibited advertising term detection via Azure Content Safety blocklist
+
+campaign_id: legal-content-check-2025
+
+products:
+  - name: "VitalTracker Pro"
+    description: "Smart health monitoring watch with heart rate, sleep tracking, and fitness metrics"
+
+  - name: "NutriBalance App"
+    description: "AI-powered meal planning application with personalized nutrition recommendations"
+
+target_market: "North America"
+
+target_audience: "Health-conscious professionals aged 30-50, fitness enthusiasts, preventive healthcare advocates"
+
+# Campaign message contains prohibited advertising terms
+# Expected to trigger compliance warnings for absolute health claims
+campaign_message: "100% GUARANTEED results! Get FREE trial - RISK-FREE weight loss solution!"
+
+brand_guidelines:
+  primary_color: "#00A86B"      # Medical green
+  secondary_color: "#4A90E2"    # Trust blue
+  logo_required: true
+  font_family: "Helvetica"
+
+# Notes for testing:
+# - "FREE" triggers prohibited advertising terms blocklist
+# - "GUARANTEED" triggers prohibited advertising terms blocklist
+# - "RISK-FREE" triggers prohibited advertising terms blocklist
+# - Should demonstrate compliance service recommendation engine
+# - Expected compliance check result: FAIL with recommendations
